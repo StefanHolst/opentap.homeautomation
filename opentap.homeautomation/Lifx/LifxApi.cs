@@ -7,13 +7,17 @@ namespace OpenTap.HomeAutomation.Lifx
 {
     public static class LifxApi
     {
-        private const string TOKEN = "c3cbfa9a4b80742bdb88ac41d3598d99a964a08d237d26d5052141371651ed80";
         private static HttpClient client;
 
         static LifxApi()
         {
             client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+            UpdateAuthorization("");
+        }
+
+        public static void UpdateAuthorization(string token)
+        {
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         public static List<LifxLight> GetLights()
@@ -22,38 +26,43 @@ namespace OpenTap.HomeAutomation.Lifx
             return JsonConvert.DeserializeObject<List<LifxLight>>(data);
         }
 
-        public static void TurnOn(LifxLight light)
+        public static void TurnOn(LifxLight light, double duration = 1)
         {
             var form = new List<KeyValuePair<string, string>>();
             form.Add(new KeyValuePair<string, string>("power", "on"));
+            form.Add(new KeyValuePair<string, string>("duration", string.Format("{0:0.0}", duration)));
             var content = new FormUrlEncodedContent(form);
             client.PutAsync($"https://api.lifx.com/v1/lights/id:{light.id}/state", content).Wait(1000);
         }
-        public static void TurnOff(LifxLight light)
+        public static void TurnOff(LifxLight light, double duration = 1)
         {
             var form = new List<KeyValuePair<string, string>>();
             form.Add(new KeyValuePair<string, string>("power", "off"));
+            form.Add(new KeyValuePair<string, string>("duration", string.Format("{0:0.0}", duration)));
             var content = new FormUrlEncodedContent(form);
             client.PutAsync($"https://api.lifx.com/v1/lights/id:{light.id}/state", content).Wait(1000);
         }
-        public static void SetBrightness(LifxLight light, double brightness)
+        public static void SetBrightness(LifxLight light, double brightness, double duration = 1)
         {
             var form = new List<KeyValuePair<string, string>>();
             form.Add(new KeyValuePair<string, string>("brightness", brightness.ToString()));
+            form.Add(new KeyValuePair<string, string>("duration", string.Format("{0:0.0}", duration)));
             var content = new FormUrlEncodedContent(form);
             client.PutAsync($"https://api.lifx.com/v1/lights/id:{light.id}/state", content).Wait(1000);
         }
-        public static void SetColor(LifxLight light, string color)
+        public static void SetColor(LifxLight light, string color, double duration = 1)
         {
             var form = new List<KeyValuePair<string, string>>();
             form.Add(new KeyValuePair<string, string>("color", $"#{color}"));
+            form.Add(new KeyValuePair<string, string>("duration", string.Format("{0:0.0}", duration)));
             var content = new FormUrlEncodedContent(form);
             client.PutAsync($"https://api.lifx.com/v1/lights/id:{light.id}/state", content).Wait(1000);
         }
-        public static void SetTemperature(LifxLight light, int temperature)
+        public static void SetTemperature(LifxLight light, int temperature, double duration = 1)
         {
             var form = new List<KeyValuePair<string, string>>();
             form.Add(new KeyValuePair<string, string>("color", "kelvin:" + temperature));
+            form.Add(new KeyValuePair<string, string>("duration", string.Format("{0:0.0}", duration)));
             var content = new FormUrlEncodedContent(form);
             client.PutAsync($"https://api.lifx.com/v1/lights/id:{light.id}/state", content).Wait(1000);
         }

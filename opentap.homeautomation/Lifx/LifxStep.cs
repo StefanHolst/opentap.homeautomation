@@ -30,6 +30,9 @@ namespace OpenTap.HomeAutomation.Lifx
         public string Color { get; set; }
         [EnabledIf(nameof(Action), LifxAction.SetTemperature, HideIfDisabled = true)]
         public int Temperature { get; set; }
+
+        [Display("Light Transition Duration")]
+        public double Duration { get; set; } = 1;
         
         public override void Run()
         {
@@ -41,19 +44,19 @@ namespace OpenTap.HomeAutomation.Lifx
                 switch (Action)
                 {
                     case LifxAction.TurnOn:
-                        LifxApi.TurnOn(Light);
+                        LifxApi.TurnOn(Light, Duration);
                         break;
                     case LifxAction.TurnOff:
-                        LifxApi.TurnOff(Light);
+                        LifxApi.TurnOff(Light, Duration);
                         break;
                     case LifxAction.ChangeBrightness:
-                        LifxApi.SetBrightness(Light, Brightness);
+                        LifxApi.SetBrightness(Light, Brightness, Duration);
                         break;
                     case LifxAction.SetColor:
-                        LifxApi.SetColor(Light, Color);
+                        LifxApi.SetColor(Light, Color, Duration);
                         break;
                     case LifxAction.SetTemperature:
-                        LifxApi.SetTemperature(Light, Temperature);
+                        LifxApi.SetTemperature(Light, Temperature, Duration);
                         break;
                 }
                 
