@@ -1,36 +1,46 @@
-using System;
 using System.Collections.Generic;
-using LifxNet;
+using System.ComponentModel;
+using System.Linq;
 using OpenTap;
 
 namespace opentap_homeautomation
 {
-    public class LifxDevice : Dut
-    {
-        
-    }
-
     public class LifxSettings : ComponentSettings<LifxSettings>
     {
-        private LifxClient client;
-        
-        public Action ScanForDevices => async () =>
+        [Display("Search for Devices")]
+        [Browsable(true)]
+        public void ScanForDevices()
         {
-            var client = await LifxNet.LifxClient.CreateAsync();
-            client.DeviceDiscovered += Client_DeviceDiscovered;
-            // client.DeviceLost += Client_DeviceLost;
-            client.StartDeviceDiscovery();
-        };
-        
-        private async void Client_DeviceDiscovered(object sender, LifxNet.LifxClient.DeviceDiscoveryEventArgs e)
-        {
-            var bulb = e.Device as LifxNet.LightBulb;
+            var lights = LifxApi.GetLights();
             
-            
-            await client.SetDevicePowerStateAsync(bulb, true); //Turn bulb on
-            await client.SetColorAsync(bulb, Colors.Red, 2700); //Set color to Red and 2700K Temperature			
+            foreach (var light in lights)
+            {
+                if (Lights.Any(d => d.uuid == light.uuid) == false)
+                {
+                    var newDeviceRequest = new NewDeviceRequest()
+                    {
+                        Name = $"{light.label} {light.uuid}"
+                    };
+                    UserInput.Request(newDeviceRequest);
+                    
+                    if (newDeviceRequest.response == NewDeviceRequest.Response.Yes)
+                        Lights.Add(light);
+                }
+            }
         }
 
-        public List<LifxDevice> Devices { get; set; } = new List<LifxDevice>();
+        public List<LifxLight> Lights { get; set; } = new List<LifxLight>();
+    }
+
+    public class NewDeviceRequest
+    {
+        public enum Response
+        {
+            Yes,
+            No
+        }
+        public string Name { get; set; }
+        [Submit]
+        public Response response { get; set; }
     }
 }
