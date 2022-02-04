@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using OpenTap;
+using opentap_homeautomation;
 
-namespace opentap_homeautomation
+namespace opentap.homeautomation.Lifx
 {
     public enum LifxAction
     {

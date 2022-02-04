@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 
-namespace opentap_homeautomation
+namespace opentap.homeautomation.Lifx
 {
     public static class LifxApi
     {
