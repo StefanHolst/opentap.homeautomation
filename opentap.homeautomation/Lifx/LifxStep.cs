@@ -36,26 +36,33 @@ namespace OpenTap.HomeAutomation.Lifx
             if (Light == null)
                 UpgradeVerdict(Verdict.Inconclusive);
 
-            switch (Action)
+            try
             {
-                case LifxAction.TurnOn:
-                    LifxApi.TurnOn(Light);
-                    break;
-                case LifxAction.TurnOff:
-                    LifxApi.TurnOff(Light);
-                    break;
-                case LifxAction.ChangeBrightness:
-                    LifxApi.SetBrightness(Light, Brightness);
-                    break;
-                case LifxAction.SetColor:
-                    LifxApi.SetColor(Light, Color);
-                    break;
-                case LifxAction.SetTemperature:
-                    LifxApi.SetTemperature(Light, Temperature);
-                    break;
+                switch (Action)
+                {
+                    case LifxAction.TurnOn:
+                        LifxApi.TurnOn(Light);
+                        break;
+                    case LifxAction.TurnOff:
+                        LifxApi.TurnOff(Light);
+                        break;
+                    case LifxAction.ChangeBrightness:
+                        LifxApi.SetBrightness(Light, Brightness);
+                        break;
+                    case LifxAction.SetColor:
+                        LifxApi.SetColor(Light, Color);
+                        break;
+                    case LifxAction.SetTemperature:
+                        LifxApi.SetTemperature(Light, Temperature);
+                        break;
+                }
+                
+                UpgradeVerdict(Verdict.Pass);
             }
-            
-            UpgradeVerdict(Verdict.Pass);
+            catch
+            {
+                UpgradeVerdict(Verdict.Fail);
+            }
         }
     }
 }
