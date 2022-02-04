@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -105,20 +106,19 @@ namespace OpenTap.HomeAutomation.Service
             var logLines = listener.LogEvents.Where(x => x.EventType != (int)LogEventType.Debug).Select(x => x.Message).ToArray();
             SendResponseAsync(Response.MakeGetResponse(System.Text.Json.JsonSerializer.Serialize(logLines)));
         }
-
-        class HttpTraceListener : ILogListener
+    }
+    
+    class HttpTraceListener : ILogListener
+    {
+        public List<Event> LogEvents = new List<Event>();
+        public void EventsLogged(IEnumerable<Event> Events)
         {
-            public List<Event> LogEvents = new List<Event>();
-            public void EventsLogged(IEnumerable<Event> Events)
-            {
-                LogEvents.AddRange(Events);
-            }
-
-            public void Flush()
-            {
-                
-            }
+            LogEvents.AddRange(Events);
         }
 
+        public void Flush()
+        {
+                
+        }
     }
 }
