@@ -12,7 +12,7 @@ namespace OpenTap.HomeAutomation.Lifx
         static LifxApi()
         {
             client = new HttpClient();
-            UpdateAuthorization("");
+            UpdateAuthorization(LifxSettings.Current.TOKEN);
         }
 
         public static void UpdateAuthorization(string token)
