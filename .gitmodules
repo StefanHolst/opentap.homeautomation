@@ -1,0 +1,3 @@
+[submodule "servy"]
+	path = servy
+	url = git@github.com:rolfrm/servy.git
