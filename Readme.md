@@ -65,7 +65,6 @@ public class LifxSettings : ComponentSettings<LifxSettings>
 {
     public List<LifxLight> Lights { get; set; } = new List<LifxLight>();
 
-
     [Display("Search for Devices")]
     [Browsable(true)]
     public void ScanForDevices()
@@ -177,7 +176,68 @@ One example is we can sweep different colors going through all imaginable colors
 
 
 
-## Create a small GUI
+## Create a small WEB GUI
+We can create a small web gui using an open-source web server called Servy.
 
-## Servy
-Serves cli calls directly to rest endpoints
+### Servy
+Servy is a small web server that maps http endpoints to cli calls. 
+
+We can configure Servy to map two endpoints, one to get all test plans in the current directory and one to execute a test plan.
+
+```yaml
+#!servy
+endpoints:
+  getplans:
+    call: dash -c "ls *TapPlan"
+  runplan:
+    call: dash -c "/usr/local/share/dotnet/dotnet tap.dll run $plan.TapPlan"  
+host: http://192.168.163.178:8080
+```
+
+With these two endpoints we can create a test plan that turns on a specific light or turns it off. We can also create a plan that does multiple things, such as turning on multiple lights in one go.
+
+### A Vue.js GUI
+We can use vue.js to create a PWA (Persisted Web App), a web app that act almost as a native smartphone app. This web app can then call these endpoints and present them in a user friendly way.
+
+
+**HTML Template:**
+
+We create a small loop that shows all plans from a list of test plans.
+```html
+<template>
+  <div class="grid">
+    <div class="light" v-for="plan in testPlans" :key="plan" @click="runPlan(plan)">
+      <h3>{{plan}}</h3>
+    </div>
+  </div>
+</template>
+```
+
+**Code Behind:**
+
+In vue we have a method called `mounted` that runs whenever the view is mounted. We can use this to call the `/getplans` endpoint, which list all available TestPlans.
+
+We also create a method to run a specific TestPlan whenever the user clicks one of the TestPlans.
+```js
+<script lang="ts">
+...
+  public testPlans: string[] = [];
+
+  async mounted(){
+    // Get available test plans
+    this.testPlans = await (await axios.get("/getplans")).data.split("\n").filter((p:string) => !!p).map((p:string) => p.substr(0, p.length - 8));
+  }
+
+  public async runPlan(plan: string){
+    console.log(plan);
+    await axios.get("/runplan?plan=" + plan)
+  }
+}
+</script>
+```
+
+**Final Result:**
+
+Aside from this code we have some styling, that we won't go into details about. But the end result is something like this:
+
+![](doc/web-gui.png)
