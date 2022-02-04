@@ -6,20 +6,20 @@ namespace OpenTap.HomeAutomation.Scheduling
     /// <summary>
     /// This test step is able to schedule the run of other test steps.
     /// </summary>
-    [AllowAnyChild]
+    [AllowChildrenOfType(typeof(ITimeTriggeredStep))]
     public class ScheduleStep : TestStep
     {
         public override void Run()
         {
-            IScheduledStep lastStep = null;
+            ITimeTriggeredStep lastStep = null;
             while (TapThread.Current.AbortToken.IsCancellationRequested == false)
             {
-                var nextup = ChildTestSteps.OfType<IScheduledStep>()
-                    .OrderBy(x => x.DelayFromNow)
+                var nextup = ChildTestSteps.OfType<ITimeTriggeredStep>()
+                    .OrderBy(x => x.TimeToTrigger)
                     .FirstOrDefault();
                 if (nextup == null)
                     break;
-                var wait = nextup.DelayFromNow;
+                var wait = nextup.TimeToTrigger;
                 if (lastStep == nextup && wait <= TimeSpan.FromSeconds(0.01))
                 {
                     TapThread.Sleep(TimeSpan.FromSeconds(0.01));

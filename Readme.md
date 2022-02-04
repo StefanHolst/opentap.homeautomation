@@ -191,6 +191,43 @@ To fulfill this need we created a couple of different test steps:
 
 A parent test step for all scheduling based steps. It is capable of running the child steps when a certain even occurs. Like the time of day. It runs the child steps in a separate thread so that multiple steps can be scheduled concurrently.
 
+The design of the Schedule Step relies on the AllowChildrenOfType attribute, so that we can ensure that all child steps implements a specific test step:
+```cs
+[AllowChildrenOfType(typeof(ITimeTriggeredStep))] // only allow ITimeTriggeredStep as childsteps.
+    public class ScheduleStep : TestStep{
+       ///...
+    }
+```
+
+The IScheduledStep is relative simple. All it does is telling the ScheduleStep when is the next time it was to execute.
+```cs
+    /// <summary>
+    /// This kind of triggered event can calculate the time until it should be triggered to start the next time.
+    /// </summary>
+    public interface ITimeTriggeredStep : ITestStep
+    {
+        /// <summary> How much time until triggering the event. </summary>
+        TimeSpan TimeToTrigger { get; }
+    }
+```
+
+The Schedule Step does the following to figure which step to run next and then run it: 
+```cs
+var nextUp = ChildTestSteps
+          // fetch all the test steps if this type.
+         .OfType<ITimeTriggeredStep>()
+          // order by the first to trigger next.
+         .OrderBy(x => x.TimeToTrigger)
+         // take the first one.
+         .FirstOrDefault();
+// wait until it is ready to execute.
+TapThread.Sleep(nextUp.TimeToTrigger); 
+// execute it asynchronously
+TapThread.Start(() => this.RunChildStep(nextUp));
+```
+
+We have developed a few different test steps that implements the ITimeTriggeredStep.
+
 ### Time of Day Step
 This test step will execute its child test steps at a specific time of the day. Multiple times can be selected each day.
 
@@ -199,6 +236,12 @@ The interval step runs the child test steps every given time interval. For examp
 
 ### Sun-based Step
 This test steps runs all child steps when the sun goes up or goes down. This can be useful if you want all lights to turn off when the sun rises.
+
+### Future Scheduled Steps
+
+In the future we might add test steps that are triggered by other events. Such as temperature changes, button clicks, web hooks. etc.
+
+These should also be included for support in the Schedule Step.
 
 ## Create an OpenTAP TestPlan
 With the TestStep ready we can start creating an OpenTAP TestPlan. Which allows us to do all kinds of cool stuff with the lights.

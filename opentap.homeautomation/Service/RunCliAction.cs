@@ -12,7 +12,7 @@ public class RunCliAction : ICliAction
     [UnnamedCommandLineArgument("name")]
     public string Name { get; set; }
 
-    private static Dictionary<TestPlan, Task<TestPlanRun>> currentRuns = new Dictionary<TestPlan, Task<TestPlanRun>>();
+    public static Dictionary<TestPlan, Task<TestPlanRun>> currentRuns = new Dictionary<TestPlan, Task<TestPlanRun>>();
 
     public static Dictionary<TestPlan, List<Event>> PlanLogs =
         new Dictionary<TestPlan, List<Event>>();
@@ -32,9 +32,23 @@ public class RunCliAction : ICliAction
             var tl = new HttpTraceListener();
             PlanLogs[plan] = tl.LogEvents;
             Log.AddListener(tl);
-            plan.ExecuteAsync();
+            currentRuns[plan] = plan.ExecuteAsync();
         }
 
         return 0;
+    }
+
+    [Display("stop", Group: "service")]
+    public class StopPlanCliAction : ICliAction
+    {
+        [UnnamedCommandLineArgument("name")]
+        public string Name { get; set; }
+
+        public int Execute(CancellationToken cancellationToken)
+        {
+            var plan = ServiceLoadCliAction.LoadedPlans[Name];
+            RunCliAction.currentRuns[plan].Result.MainThread.Abort();
+            return 0;
+        }
     }
 }

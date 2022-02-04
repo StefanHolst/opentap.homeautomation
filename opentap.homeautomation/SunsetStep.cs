@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace OpenTap.HomeAutomation.Scheduling
 {
-    public class SunScheduleStep : TestStep, IScheduledStep
+    public class SunScheduleStep : TestStep, ITimeTriggeredStep
     {
         public SunEventType Type { get; set; }
         
@@ -22,7 +22,7 @@ namespace OpenTap.HomeAutomation.Scheduling
             // throw new NotImplementedException();
         }
 
-        public TimeSpan DelayFromNow
+        public TimeSpan TimeToTrigger
         {
             get
             {

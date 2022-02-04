@@ -4,7 +4,7 @@ namespace OpenTap.HomeAutomation.Scheduling
 {
     [AllowAnyChild]
     [Display("Repeat Every {Every}")]
-    public class TimeIntervalStep : TestStep, IScheduledStep
+    public class TimeIntervalStep : TestStep, ITimeTriggeredStep
     {
         public TimeSpan Every { get; set; } = TimeSpan.FromSeconds(5);
         private DateTime lastRun;
@@ -14,7 +14,7 @@ namespace OpenTap.HomeAutomation.Scheduling
             RunChildSteps();
         }
 
-        public TimeSpan DelayFromNow {
+        public TimeSpan TimeToTrigger {
             get
             {
                 var nextTime = (lastRun + Every) - DateTime.Now;
@@ -22,7 +22,6 @@ namespace OpenTap.HomeAutomation.Scheduling
                 {
                     return TimeSpan.Zero;
                 }
-
                 return nextTime;
             }
             

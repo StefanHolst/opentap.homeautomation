@@ -6,7 +6,7 @@ namespace OpenTap.HomeAutomation.Scheduling
 {
     [AllowAnyChild]
     [Display("Every day at {DescriptionString}")]
-    public class EveryDayStep : TestStep, IScheduledStep
+    public class EveryDayStep : TestStep, ITimeTriggeredStep
     {
         public string Times { get; set; } = "12:00";
 
@@ -38,7 +38,7 @@ namespace OpenTap.HomeAutomation.Scheduling
             RunChildSteps();
         }
 
-        public TimeSpan DelayFromNow
+        public TimeSpan TimeToTrigger
         {
             get
             {
