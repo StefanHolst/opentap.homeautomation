@@ -1,6 +1,6 @@
 <template>
   <div class="grid">
-    <div class="light" v-for="plan in testPlans" :key="plan">
+    <div class="light" v-for="plan in testPlans" :key="plan" @click="runPlan(plan)">
       <h3>{{plan}}</h3>
     </div>
   </div>
@@ -20,31 +20,12 @@ export default class HelloWorld extends Vue {
 
   async mounted(){
     // Get available test plans
-    this.testPlans = JSON.parse(await (await axios.get("/getplans")).data);
+    this.testPlans = await (await axios.get("/getplans")).data.split("\n").filter((p:string) => !!p).map((p:string) => p.substr(0, p.length - 8));
+  }
 
-    if (this.testPlans.length > 0){
-      this.testPlans = [
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light",
-        "Turn on light"
-      ]
-    }
+  public async runPlan(plan: string){
+    console.log(plan);
+    await axios.get("/runplan?plan=" + plan)
   }
 }
 </script>
@@ -63,5 +44,6 @@ export default class HelloWorld extends Vue {
   height: 100px;
   border-radius: 5px;
   background-color: rgb(229, 30, 51);
+  color: white;
 }
 </style>

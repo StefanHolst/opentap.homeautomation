@@ -1,7 +1,24 @@
 #!servy
 
 endpoints:
-  run:
+  run$:
     call: dotnet tap.dll run auto.TapPlan
+  getplans:
+    call: dash -c "ls *TapPlan"
+  runplan:
+    call: dash -c "/usr/local/share/dotnet/dotnet tap.dll run $plan.TapPlan"
+  gui$:
+    call: cat ../../gui/dist/index.html
+  "gui/(.*).css$":
+    call: dash -c "cat ../../gui/dist/$ARG1.css"
+    response-type: text/css
+  "gui/(.*).js$":
+    call: dash -c "cat ../../gui/dist/$ARG1.js"
+    response-type: text/javascript
+  "gui/(.*).json":
+    call: dash -c "cat ../../gui/dist/$ARG1.json"
+    response-type: application/json
+  "gui/(.*)":
+    call: dash -c "cat ../../gui/dist/$ARG1"
   
-host: http://localhost:8080
+host: http://192.168.163.178:8080
