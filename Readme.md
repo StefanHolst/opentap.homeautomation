@@ -1,19 +1,20 @@
 # OpenTAP Home Automation
 Today is side project friday... So let's create a home automation system using OpenTAP.
 
-We want to figure to what extent OpenTAP can be used for automating the home and which downsides or benefits would be to it.
+We want to figure how we can extent OpenTAP to be used for automating the home and which downsides or benefits would be to it.
 
 The vision for it is to create an easy way to design and execution the automation. 
 
 ### Initial Ideas
  - Controlling LIFX light bulbs
- - Scheduling actions with the light bulbs such as turn off when it gets dark.
+ - Scheduling actions with the light bulbs, such as turn off when it gets dark.
  - Design a system that can always be 'on'. For example a kind of service, mixed with "Resumable" test steps.
  - Add a WEB UI to control everything.
 
 ### Prerequisites
 - LIFX Light Bulbs
-- OpenTAP
+- OpenTAP - https://opentap.io
+- Servy - https://github.com/rolfrm/servy
 
 ## LIFX Light Bulb Control
 LIFX provides an easy to use HTTP WEB API with great [documentation](https://api.developer.lifx.com/docs).
@@ -182,14 +183,16 @@ public override void Run()
 
 In home automation it is often nice to be able to run automations triggered by certain events. For example, if you want to start an alarm and turn on the lights in the morning.
 
-To fulfull this need we created a couple of different test steps:
+To fulfill this need we created a couple of different test steps:
+
 ![](doc/tui-schedules.png)
+
 ### Schedule Step
 
 A parent test step for all scheduling based steps. It is capable of running the child steps when a certain even occurs. Like the time of day. It runs the child steps in a separate thread so that multiple steps can be scheduled concurrently.
 
 ### Time of Day Step
-This test step will execute is child test steps at a specific time of the day. Multiple times can be selected each day.
+This test step will execute its child test steps at a specific time of the day. Multiple times can be selected each day.
 
 ### Interval Step
 The interval step runs the child test steps every given time interval. For example, all child steps can be executed every 5 seconds.
