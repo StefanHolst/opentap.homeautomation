@@ -12,6 +12,7 @@ namespace OpenTap.HomeAutomation
     {
         public override void Run()
         {
+            IScheduledStep lastStep = null;
             while (TapThread.Current.AbortToken.IsCancellationRequested == false)
             {
                 var nextup = ChildTestSteps.OfType<IScheduledStep>()
@@ -20,10 +21,16 @@ namespace OpenTap.HomeAutomation
                 if (nextup == null)
                     break;
                 var wait = nextup.DelayFromNow;
+                if (lastStep == nextup && wait <= TimeSpan.FromSeconds(0.01))
+                {
+                    TapThread.Sleep(TimeSpan.FromSeconds(0.01));
+                    continue;
+                }
                 Log.Info("Running {0} at {1}s", nextup.GetFormattedName(), wait);
                 
                 TapThread.Sleep(wait);
-                RunChildStep(nextup);
+                TapThread.Start(() => RunChildStep(nextup));
+                lastStep = nextup;
             }
         }
     }
