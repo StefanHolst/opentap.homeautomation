@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenTap.HomeAutomation
+namespace OpenTap.HomeAutomation.Scheduling
 {
     public interface IScheduledStep : ITestStep
     {

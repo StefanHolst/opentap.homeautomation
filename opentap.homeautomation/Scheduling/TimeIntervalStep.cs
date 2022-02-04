@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenTap.HomeAutomation
+namespace OpenTap.HomeAutomation.Scheduling
 {
     [AllowAnyChild]
     [Display("Repeat Every {Every}")]

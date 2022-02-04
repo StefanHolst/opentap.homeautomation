@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenTap.HomeAutomation
+namespace OpenTap.HomeAutomation.Scheduling
 {
     [AllowAnyChild]
     [Display("Every day at {DescriptionString}")]

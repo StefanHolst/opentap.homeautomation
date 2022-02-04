@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
     
   <PropertyGroup>
@@ -15,5 +15,6 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="OpenTAP" Version="9.17.0-beta.41" />
+      <PackageReference Include="NetCoreServer" Version="6.2.0"/>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace OpenTap.HomeAutomation
+namespace OpenTap.HomeAutomation.Scheduling
 {
     /// <summary>
     /// This test step is able to schedule the run of other test steps.

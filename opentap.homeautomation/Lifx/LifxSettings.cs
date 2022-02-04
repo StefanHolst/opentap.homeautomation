@@ -2,9 +2,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using OpenTap;
-using opentap_homeautomation;
 
-namespace opentap.homeautomation.Lifx
+namespace OpenTap.HomeAutomation.Lifx
 {
     public class LifxSettings : ComponentSettings<LifxSettings>
     {

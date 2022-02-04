@@ -1,0 +1,7 @@
+#!servy
+
+endpoints:
+  run:
+    call: dotnet tap.dll run auto.TapPlan
+  
+host: http://localhost:8080
