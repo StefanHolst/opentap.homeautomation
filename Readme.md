@@ -101,6 +101,7 @@ public void ScanForDevices()
 ```
 
 Below is how it looks in the TUI:
+
 ![](doc/tui-settings.png)
 
 
@@ -119,6 +120,9 @@ public class LifxStep : TestStep
     public LifxLight Light { get; set; }
 }
 ```
+
+The available values will show up in a GUI like this:
+
 ![](doc/tui-available-lights.png)
 
 
@@ -168,6 +172,7 @@ public override void Run()
 With the TestStep ready we can start creating an OpenTAP TestPlan. Which allows us to do all kinds of cool stuff with the lights.
 
 One example is we can sweep different colors going through all imaginable colors of the lights:
+
 ![](doc/tui-sweep.png)
 
 
