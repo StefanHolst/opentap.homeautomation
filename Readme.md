@@ -15,12 +15,12 @@ From this documentation we can see we need to get a authentication token and use
 With C# it's pretty easy to setup a `HttpClient` with that token attached.
 
 ```cs
-private const string TOKEN = "xxxxxxxxxxxxx";
 private static HttpClient client;
-static LifxApi()
+static void Init()
 {
     client = new HttpClient();
-    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LifxSettings.Current.TOKEN);
+    needInit = false;
 }
 ```
 
@@ -32,6 +32,9 @@ Before we can control our lights, we need to find them. LIFX has a simple endpoi
 ```cs
 public static List<LifxLight> GetLights()
 {
+    if (needInit)
+        Init();
+    
     var data = client.GetStringAsync("https://api.lifx.com/v1/lights/all").Result;
     return JsonConvert.DeserializeObject<List<LifxLight>>(data);
 }
