@@ -31,17 +31,7 @@ namespace OpenTap.HomeAutomation.Lifx
 
         public List<LifxLight> Lights { get; set; } = new List<LifxLight>();
 
-        private string token;
-
-        public string TOKEN
-        {
-            get => token;
-            set
-            {
-                token = value;
-                LifxApi.UpdateAuthorization(value);
-            }
-        }
+        public string TOKEN { get; set; }
     }
 
     public class NewDeviceRequest

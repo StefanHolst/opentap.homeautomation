@@ -8,26 +8,29 @@ namespace OpenTap.HomeAutomation.Lifx
     public static class LifxApi
     {
         private static HttpClient client;
+        private static bool needInit = true;
 
-        static LifxApi()
+        static void Init()
         {
             client = new HttpClient();
-            UpdateAuthorization("");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LifxSettings.Current.TOKEN);
+            needInit = false;
         }
-
-        public static void UpdateAuthorization(string token)
-        {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        }
-
+        
         public static List<LifxLight> GetLights()
         {
+            if (needInit)
+                Init();
+            
             var data = client.GetStringAsync("https://api.lifx.com/v1/lights/all").Result;
             return JsonConvert.DeserializeObject<List<LifxLight>>(data);
         }
 
         public static void TurnOn(LifxLight light, double duration = 1)
         {
+            if (needInit)
+                Init();
+            
             var form = new List<KeyValuePair<string, string>>();
             form.Add(new KeyValuePair<string, string>("power", "on"));
             form.Add(new KeyValuePair<string, string>("duration", string.Format("{0:0.0}", duration)));
@@ -36,6 +39,9 @@ namespace OpenTap.HomeAutomation.Lifx
         }
         public static void TurnOff(LifxLight light, double duration = 1)
         {
+            if (needInit)
+                Init();
+
             var form = new List<KeyValuePair<string, string>>();
             form.Add(new KeyValuePair<string, string>("power", "off"));
             form.Add(new KeyValuePair<string, string>("duration", string.Format("{0:0.0}", duration)));
@@ -44,6 +50,9 @@ namespace OpenTap.HomeAutomation.Lifx
         }
         public static void SetBrightness(LifxLight light, double brightness, double duration = 1)
         {
+            if (needInit)
+                Init();
+
             var form = new List<KeyValuePair<string, string>>();
             form.Add(new KeyValuePair<string, string>("brightness", brightness.ToString()));
             form.Add(new KeyValuePair<string, string>("duration", string.Format("{0:0.0}", duration)));
@@ -52,6 +61,9 @@ namespace OpenTap.HomeAutomation.Lifx
         }
         public static void SetColor(LifxLight light, string color, double duration = 1)
         {
+            if (needInit)
+                Init();
+
             var form = new List<KeyValuePair<string, string>>();
             form.Add(new KeyValuePair<string, string>("color", $"#{color}"));
             form.Add(new KeyValuePair<string, string>("duration", string.Format("{0:0.0}", duration)));
@@ -60,6 +72,9 @@ namespace OpenTap.HomeAutomation.Lifx
         }
         public static void SetTemperature(LifxLight light, int temperature, double duration = 1)
         {
+            if (needInit)
+                Init();
+
             var form = new List<KeyValuePair<string, string>>();
             form.Add(new KeyValuePair<string, string>("color", "kelvin:" + temperature));
             form.Add(new KeyValuePair<string, string>("duration", string.Format("{0:0.0}", duration)));
