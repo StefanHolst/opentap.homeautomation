@@ -7,7 +7,7 @@ endpoints:
     call: dash -c "ls *TapPlan"
   runplan:
     call: dash -c "/usr/local/share/dotnet/dotnet tap.dll run $plan.TapPlan"
-  gui$:
+  gui/$:
     call: cat ../../gui/dist/index.html
   "gui/(.*).css$":
     call: dash -c "cat ../../gui/dist/$ARG1.css"

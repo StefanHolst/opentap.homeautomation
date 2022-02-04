@@ -24,7 +24,6 @@ export default class HelloWorld extends Vue {
   }
 
   public async runPlan(plan: string){
-    console.log(plan);
     await axios.get("/runplan?plan=" + plan)
   }
 }

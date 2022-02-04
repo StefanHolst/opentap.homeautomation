@@ -229,7 +229,6 @@ We also create a method to run a specific TestPlan whenever the user clicks one 
   }
 
   public async runPlan(plan: string){
-    console.log(plan);
     await axios.get("/runplan?plan=" + plan)
   }
 }
