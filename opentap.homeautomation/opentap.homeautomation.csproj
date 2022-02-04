@@ -14,6 +14,6 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="OpenTAP" Version="$(OpenTapVersion)" />
+    <PackageReference Include="OpenTAP" Version="9.17.0-beta.41" />
   </ItemGroup>
 </Project>
