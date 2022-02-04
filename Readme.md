@@ -1,13 +1,22 @@
 # OpenTAP Home Automation
 Today is side project friday... So let's create a home automation system using OpenTAP.
 
+We want to figure to what extent OpenTAP can be used for automating the home and which downsides or benefits would be to it.
+
+The vision for it is to create an easy way to design and execution the automation. 
+
+### Initial Ideas
+ - Controlling LIFX light bulbs
+ - Scheduling actions with the light bulbs such as turn off when it gets dark.
+ - Design a system that can always be 'on'. For example a kind of service, mixed with "Resumable" test steps.
+ - Add a WEB UI to control everything.
+
 ### Prerequisites
 - LIFX Light Bulbs
 - OpenTAP
 
-## Create a LIFX API
+## LIFX Light Bulb Control
 LIFX provides an easy to use HTTP WEB API with great [documentation](https://api.developer.lifx.com/docs).
-
 
 ### Authentication and Setup
 From this documentation we can see we need to get a authentication token and use it when calling the API.
@@ -15,6 +24,7 @@ From this documentation we can see we need to get a authentication token and use
 With C# it's pretty easy to setup a `HttpClient` with that token attached.
 
 ```cs
+// todo: Dont use a static constructor.
 private const string TOKEN = "xxxxxxxxxxxxx";
 private static HttpClient client;
 static LifxApi()
@@ -26,7 +36,7 @@ static LifxApi()
 
 This HttpClient can now be used to send request to the LIFX HTTP WEB API. We will use this to create method to control our lights.
 
-### Find our Available Lights
+### Finding our Available Lights
 Before we can control our lights, we need to find them. LIFX has a simple endpoint to list all lights:
 
 ```cs
@@ -37,7 +47,7 @@ public static List<LifxLight> GetLights()
 }
 ```
 
-### Control the Lights
+### Sending Commands to the Lights
 Now with a list of our lights, we can create methods that allow us to control them.
 
 To turn on a light we need to provide the id of the light that need to change `/id:<the light id>/`. 
@@ -166,6 +176,24 @@ public override void Run()
 
 ![](doc/tui-testplan.png)
 
+## Scheduling Test Steps
+
+In home automation it is often nice to be able to run automations triggered by certain events. For example, if you want to start an alarm and turn on the lights in the morning.
+
+To fulfull this need we created a couple of different test steps:
+![](doc/tui-schedules.png)
+### Schedule Step
+
+A parent test step for all scheduling based steps. It is capable of running the child steps when a certain even occurs. Like the time of day. It runs the child steps in a separate thread so that multiple steps can be scheduled concurrently.
+
+### Time of Day Step
+This test step will execute is child test steps at a specific time of the day. Multiple times can be selected each day.
+
+### Interval Step
+The interval step runs the child test steps every given time interval. For example, all child steps can be executed every 5 seconds.
+
+### Sun-based Step
+This test steps runs all child steps when the sun goes up or goes down. This can be useful if you want all lights to turn off when the sun rises.
 
 ## Create an OpenTAP TestPlan
 With the TestStep ready we can start creating an OpenTAP TestPlan. Which allows us to do all kinds of cool stuff with the lights.
@@ -173,7 +201,6 @@ With the TestStep ready we can start creating an OpenTAP TestPlan. Which allows 
 One example is we can sweep different colors going through all imaginable colors of the lights:
 
 ![](doc/tui-sweep.png)
-
 
 
 ## Create a small WEB GUI
@@ -236,8 +263,10 @@ We also create a method to run a specific TestPlan whenever the user clicks one 
 </script>
 ```
 
-**Final Result:**
+### Final WEB UI Result
 
 Aside from this code we have some styling, that we won't go into details about. But the end result is something like this:
 
 ![](doc/web-gui.png)
+
+

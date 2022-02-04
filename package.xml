@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Name="HomeAutomation" xmlns="http://opentap.io/schemas/package" InfoLink="" Version="$(GitVersion)" OS="Windows,Linux,MacOS">
+  <Description>Home automation with OpenTAP!</Description>
+  <Files>
+    <File Path="Packages/HomeAutomation/OpenTap.HomeAutomation.dll" SourcePath="OpenTap.HomeAutomation.dll">
+        <SetAssemblyInfo Attributes="Version"/>
+    </File>
+  </Files>
+</Package>
