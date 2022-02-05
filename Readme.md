@@ -17,7 +17,7 @@ The vision for it is to create an easy way to design and execution the automatio
 - Servy - https://github.com/rolfrm/servy
 
 ## LIFX Light Bulb Control
-LIFX is a WiFi connected smart light and provides an easy to use HTTP WEB API with great [documentation](https://api.developer.lifx.com/docs).
+LIFX is a WiFi connected smart light and they provide an easy to use HTTP WEB API with great [documentation](https://api.developer.lifx.com/docs).
 
 ### Authentication and Setup
 From this documentation we can see we need to get a authentication token and use it when calling the API.
