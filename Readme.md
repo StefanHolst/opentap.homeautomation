@@ -249,7 +249,7 @@ With the TestStep ready we can start creating an OpenTAP TestPlan. Which allows 
 We have a few useful and fun ideas:
 - We could turn on the lights when the sun sets.
 - Lower the brightness of the lights in the evening, before bedtime.
-- Or we could create a fun party mode with the light continually changing colors.
+- Or we could create a fun party mode with the light continuously changing colors.
 
 **Turn on the lights when the sun sets:**
 
