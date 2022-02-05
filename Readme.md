@@ -194,21 +194,21 @@ A parent test step for all scheduling based steps. It is capable of running the 
 The design of the Schedule Step relies on the AllowChildrenOfType attribute, so that we can ensure that all child steps implements a specific test step:
 ```cs
 [AllowChildrenOfType(typeof(ITimeTriggeredStep))] // only allow ITimeTriggeredStep as childsteps.
-    public class ScheduleStep : TestStep{
-       ///...
-    }
+public class ScheduleStep : TestStep{
+   ///...
+}
 ```
 
 The IScheduledStep is relative simple. All it does is telling the ScheduleStep when is the next time it was to execute.
 ```cs
-    /// <summary>
-    /// This kind of triggered event can calculate the time until it should be triggered to start the next time.
-    /// </summary>
-    public interface ITimeTriggeredStep : ITestStep
-    {
-        /// <summary> How much time until triggering the event. </summary>
-        TimeSpan TimeToTrigger { get; }
-    }
+/// <summary>
+/// This kind of triggered event can calculate the time until it should be triggered to start the next time.
+/// </summary>
+public interface ITimeTriggeredStep : ITestStep
+{
+    /// <summary> How much time until triggering the event. </summary>
+    TimeSpan TimeToTrigger { get; }
+}
 ```
 
 The Schedule Step does the following to figure which step to run next and then run it: 
