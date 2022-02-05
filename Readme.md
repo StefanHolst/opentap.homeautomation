@@ -246,7 +246,20 @@ These should also be included for support in the Schedule Step.
 ## Create an OpenTAP TestPlan
 With the TestStep ready we can start creating an OpenTAP TestPlan. Which allows us to do all kinds of cool stuff with the lights.
 
-One example is we can sweep different colors going through all imaginable colors of the lights:
+We have a few useful and fun ideas:
+- We could turn on the lights when the sun sets.
+- Lower the brightness of the lights in the evening, before bedtime.
+- Or we could create a fun party mode with the light continually changing colors.
+
+**Turn on the lights when the sun sets:**
+
+![](doc/tui-sunset.png)
+
+**Lower the brightness in the evening, before bedtime:**
+
+![](doc/tui-night.png)
+
+**Sweep different colors going throught all imaginable colors of the lights:**
 
 ![](doc/tui-sweep.png)
 

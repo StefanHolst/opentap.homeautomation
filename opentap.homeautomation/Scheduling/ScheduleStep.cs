@@ -6,7 +6,8 @@ namespace OpenTap.HomeAutomation.Scheduling
     /// <summary>
     /// This test step is able to schedule the run of other test steps.
     /// </summary>
-    [AllowChildrenOfType(typeof(ITimeTriggeredStep))]
+    // [AllowChildrenOfType(typeof(ITimeTriggeredStep))]
+    [AllowAnyChild]
     public class ScheduleStep : TestStep
     {
         public override void Run()
