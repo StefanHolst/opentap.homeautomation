@@ -1,9 +1,11 @@
 # OpenTAP Home Automation
-Today is side project friday... So let's create a home automation system using OpenTAP.
+Today is side project Friday... So let's create a home automation system using OpenTAP.
 
 We want to figure how we can extent OpenTAP to be used for automating the home and which downsides or benefits would be to it.
 
 The vision for it is to create an easy way to design and execution the automation. 
+
+![](doc/tui-gif.gif)
 
 ### Initial Ideas
  - Controlling LIFX light bulbs
@@ -259,7 +261,7 @@ We have a few useful and fun ideas:
 
 ![](doc/tui-night.png)
 
-**Sweep different colors going throught all imaginable colors of the lights:**
+**Sweep different colors going through all imaginable colors of the lights:**
 
 ![](doc/tui-sweep.png)
 
